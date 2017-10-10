@@ -2,24 +2,12 @@
 
 #include <stdint.h>
 #include <assert.h>
+#include <stdio.h> // For debugging
 
 #define MEM_SIZE 1000000
 
 /* The memory. */
 mint mem[MEM_SIZE];
-
-typedef enum MMRegisterID {
-    R_K  = 0,
-    R_X  = 1,
-    R_Y  = 2,
-    R_R  = 3, R_C = R_R,
-    R_Z  = 4,
-    R_W  = 5,
-    R_A  = 6,
-    R_M  = 7,
-    R_IP = 8,
-    R_J  = 9, R_L = R_J
-} MMRegisterID;
 
 typedef enum MMOperationID {
     OP_X = 0,
@@ -59,10 +47,13 @@ MMErrorCode step(machine_state* st) {
     mint ins = mem[st->IP];
     ++st->IP;
 
-    int src = ins % 10; ins /= 10;
-    int dest = ins % 10;
+    fprintf(stderr, "DB| ins=%ld\n", ins);
+    int dest = ins % 10; ins /= 10;
+    int src = ins % 10;
     if (src<0) src=-src;
     if (dest<0) dest=-dest;
+
+    fprintf(stderr, "DB| src=%d, dest=%d\n", src, dest);
 
     mint d; // Data to be moved.
     //---------- Read phase:
@@ -91,6 +82,8 @@ MMErrorCode step(machine_state* st) {
     default:
         return MM_EINTERNAL;
     }
+
+    fprintf(stderr, "DB|   d=%ld\n", d);
 
     //---------- Write phase:
     switch (dest) {
@@ -150,6 +143,7 @@ static MMErrorCode check_mem_access(mint addr) {
 }
 
 static mint perform_calculation(mint x, mint y, mint op, MMErrorCode* err) {
+    fprintf(stderr, "DB| perform_calculation: op=%ld\n", op);
     mint d;
     switch (op) {
     case OP_X: d = x; break;
@@ -183,4 +177,9 @@ static mint perform_calculation(mint x, mint y, mint op, MMErrorCode* err) {
 void put_mem(int addr, mint x) {
     assert(addr>=0 && addr<MEM_SIZE);
     mem[addr] = x;
+}
+
+mint get_mem(int addr) {
+    assert(addr>=0 && addr<MEM_SIZE);
+    return mem[addr];
 }

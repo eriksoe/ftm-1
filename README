@@ -1,0 +1,102 @@
+Move Machine - Educational computer processor
+=============================================
+
+Basic properties:
+-----------------
+
+- Simple instruction set: One kind of instruction, more or less - the
+  move instruction.
+- Integers only.
+- Decimal. 9+ digits. (Representable in Javascript numbers type.)
+- I/O: memory-mapped.
+
+
+Instruction format
+------------------
+Instructions all have the same format: the two lowest (decimal) digits indicate
+the source and destination register:
+
+  <imm><source:1><dest:1>
+
+There are 10 "registers". Some of them are regular registers, some of
+them have special behaviour:
+
+Registers:
+
+|====================
+| Nr. | Name r/w | Description                      |
+|   0 | K        | Read: Immediate                  |
+|   1 | X        | General; first operand to ALU    |
+|   2 | Y        | General; second operand to ALU   |
+|   3 | R/C      | Read: ALU result                 |
+|     |          | Write: ALU control               |
+|   4 | Z        | General                          |
+|   5 | W        | General                          |
+|   6 | A        | Memory address                   |
+|   7 | M        | Memory                           |
+|   8 | IP       | Instruction pointer              |
+|   9 | L/J      | Read: Last IP value overwritten; |
+|     |          | write: Conditional jump control  |
+|====================
+
+- K: Not writeable. Reading yields the "immediate" part of the current instruction.
+- X, Y, Z, W, A are regular, in the sense that you can read what you write into then.
+- M is the current memory cell, as determined by A.
+- R/C are ALU related: R is the current ALU output, as determined by the inputs X and Y and the operator control C.
+- IP is the instruction pointer, determining the next instruction to be fetched.
+- L/J is related to the instruction pointer, and used for conditional jumps and procedure calls.
+  When IP is overwritten by an instruction, its last value is saved in L, which can be read.
+  Writing to J sets the IP if R!=0, and does nothing otherwise.
+
+Diagram:
+--------
+
+#+BEGIN_EXAMPLE
+    +---------+
+   _|_        |
+  /   \       |
+ /  _  \<---+ |
+/__/ \__\   | |
+ |     |    | v
++-+   +-+  +-+-+  +-+ +-+
+|X|   |Y|  |C|R|  |Z| |W|
++-+   +-+  +-+-+  +-+ +-+
+ |     |    ^ v    |   |
+===============================
+ |       |    ^     |    ^ v
++-+     +-+  | |  +--+  +--+
+|K|     |A|->| |  |IP|->|L|J|
++-+     +-+  | |  +--+  +-+-+
+              V     ^      |<.......R
+             +-+    +------+
+             |M|
+             +-+
+#+END_EXAMPLE
+
+
+========== Operations:
+
+The ALU supports the following operations:
+
+|  ID | Expression | Description           |
+|   0 | X          | First operand         |
+|   1 | Y          | Second operand        |
+|   3 | X + Y      | Addition              |
+|   4 | X - Y      | Subtraction           |
+|   5 | X * Y      | Multiplication        |
+|   6 | X / Y      | Integer division      |
+|   7 | X % Y      | Remainder by division |
+| ... |            |                       |
+|  10 | X < Y      | Less than             |
+|  11 | X > Y      | Greater than          |
+|  12 | X <= Y     | Less-or-equal         |
+|  13 | X >= Y     | Greater-or-equal      |
+|  14 | X == Y     | Equal                 |
+|  15 | X != Y     | Not equal             |
+|  16 | X AND Y    | Logical "AND"         |
+|  17 | X OR Y     | Logical "OR"          |
+|  18 | X XOR Y    | Logical "XOR"         |
+|  19 | NOT X      | Logical negation      |
+
+
+========== I/O devices:

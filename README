@@ -81,11 +81,11 @@ The ALU supports the following operations:
 |  ID | Expression | Description           |
 |   0 | X          | First operand         |
 |   1 | Y          | Second operand        |
-|   3 | X + Y      | Addition              |
-|   4 | X - Y      | Subtraction           |
-|   5 | X * Y      | Multiplication        |
-|   6 | X / Y      | Integer division      |
-|   7 | X % Y      | Remainder by division |
+|   2 | X + Y      | Addition              |
+|   3 | X - Y      | Subtraction           |
+|   4 | X * Y      | Multiplication        |
+|   5 | X / Y      | Integer division      |
+|   6 | X % Y      | Remainder by division |
 | ... |            |                       |
 |  10 | X < Y      | Less than             |
 |  11 | X > Y      | Greater than          |

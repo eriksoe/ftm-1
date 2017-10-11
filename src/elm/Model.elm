@@ -115,7 +115,25 @@ fetchPhase(state, src, lit) =
    _ -> 0 -- TODO: Internal error.
 
 storePhase(state, dest, d) =
- state --TODO!
+  case dest of
+    0 -> {state | error=Just {}} -- Error!
+    1 -> {state | x=d}
+    2 -> {state | y=d}
+    3 -> case decodeAluOp(d) of
+           Just op -> {state | op=op}
+           Nothing -> {state | error=Just {}}
+    4 -> {state | z=d}
+    5 -> {state | w=d}
+    6 -> {state | a=d}
+    7 -> store(state, state.a, d)
+    8 -> goto(state,d)
+    9 -> if i2b(aluResult(state))
+         then goto(state,d) -- Jump
+         else state         -- No jump
+    _ -> state -- TODO: Internal error.
+
+goto(state,newIP) =
+  {state | ip=newIP, lastIP=state.ip}
 
 aluResult(state) =
   let x=state.x

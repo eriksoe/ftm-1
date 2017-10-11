@@ -48,6 +48,8 @@ update msg model =
       in case String.toInt valueStr of
         Ok value -> {model | machineState={ms | memory=Array.set addr value model.machineState.memory}}
         Err reason -> model --TODO: Error feedback
+    SelectSpeed Step ->
+      {model | machineState=Model.step(model.machineState)}
     other -> model
    , Cmd.none)
 
@@ -65,7 +67,8 @@ view model = body [
        style [ ("backgroundColor", "black") ]
      ] [
      div [style [ ("color", "white") ]] [
-     text "Hej!",
+       div [] [text "Hej!"],
+       button [onClick (SelectSpeed Step)] [text "Step"],
      memoryView model.machineState.memory {editingState=model.editingMemory, ip=model.machineState.ip}
      ]
      ]

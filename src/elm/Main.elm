@@ -62,14 +62,16 @@ validateDatum s =
 subscriptions : State -> Sub Msg
 subscriptions model = Sub.none
 
+type alias ExtraMemoryViewState = {editingState: Maybe MemoryEditState, ip: Int, a: Int}
+
 view : State -> Html Msg
 view model = body [
-       style [ ("backgroundColor", "black") ]
+       style [ ("backgroundColor", "#333") ]
      ] [
      div [style [ ("color", "white") ]] [
        div [] [text "Hej!"],
        button [onClick (SelectSpeed Step)] [text "Step"],
-     memoryView model.machineState.memory {editingState=model.editingMemory, ip=model.machineState.ip}
+     memoryView model.machineState.memory {editingState=model.editingMemory, ip=model.machineState.ip, a=model.machineState.a}
      ]
      ]
 
@@ -86,14 +88,26 @@ memoryViewRows mem state =
 ipArrow =
   String.fromChar (Char.fromCode 0x25B6) -- "Black Right-Pointing Triangle"
 
+memoryViewRow : ExtraMemoryViewState -> Int -> Int -> Html Msg
 memoryViewRow state memAddr memValue =
   tr [] [
-    td [] (if memAddr == state.ip
-           then [ span [style [("color", "#6f6")]] [text ipArrow] ]
-           else []),
+    td [] (memMarkingA(memAddr, state)),
+    td [] (memMarkingIP(memAddr, state)),
     td [style [("text-align","right")] ] [text ((toString memAddr)++":")],
     td [] (memoryValueEditCell memAddr memValue state)
   ]
+
+memMarkingIP : (Int, ExtraMemoryViewState) -> List (Html Msg)
+memMarkingIP(memAddr, state) =
+  if memAddr == state.ip
+  then [span [style [("color", "#6f6")]] [text ipArrow]]
+  else []
+
+memMarkingA : (Int, ExtraMemoryViewState) -> List (Html Msg)
+memMarkingA(memAddr, state) =
+  if memAddr == state.a
+  then [span [style [("color", "#fc6")]] [text ipArrow]]
+  else []
 
 memoryValueEditCell memAddr memValue state =
   let editingValue =

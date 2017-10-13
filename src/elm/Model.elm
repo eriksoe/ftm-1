@@ -1,4 +1,8 @@
-module Model exposing (MachineState, init, step)
+module Model exposing (
+  MachineState,
+  init, step, resetIP,
+  decodeIns, srcRegisterName, destRegisterName
+  )
 
 import Array exposing (Array)
 
@@ -168,3 +172,34 @@ fetch(state, addr) =
 
 store(state, addr, value) =
   {state | memory=Array.set addr value state.memory}
+
+--========== Utilities for external use ====================--
+srcRegisterName : Int -> String
+srcRegisterName x =
+  case x of
+   0 -> "K"
+   1 -> "X"
+   2 -> "Y"
+   3 -> "R"
+   4 -> "Z"
+   5 -> "W"
+   6 -> "A"
+   7 -> "M"
+   8 -> "IP"
+   9 -> "L"
+   _ -> "??"
+
+destRegisterName : Int -> String
+destRegisterName x =
+  case x of
+   0 -> "K" -- (Invalid)
+   1 -> "X"
+   2 -> "Y"
+   3 -> "C" -- Different from srcRegisterName
+   4 -> "Z"
+   5 -> "W"
+   6 -> "A"
+   7 -> "M"
+   8 -> "IP"
+   9 -> "J" -- Different from srcRegisterName
+   _ -> "??"

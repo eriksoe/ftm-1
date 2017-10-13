@@ -1,4 +1,5 @@
 import Model
+--import CPUView
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -50,6 +51,8 @@ update msg model =
         Err reason -> model --TODO: Error feedback
     SelectSpeed Step ->
       {model | machineState=Model.step(model.machineState)}
+    SelectSpeed Reset ->
+      {model | machineState=Model.resetIP(model.machineState)}
     other -> model
    , Cmd.none)
 
@@ -69,7 +72,7 @@ view model = body [
        style [ ("backgroundColor", "#333") ]
      ] [
      div [style [ ("color", "white") ]] [
-       div [] [text "Hej!"],
+       button [onClick (SelectSpeed Reset)] [text "Reset"],
        button [onClick (SelectSpeed Step)] [text "Step"],
      memoryView model.machineState.memory {editingState=model.editingMemory, ip=model.machineState.ip, a=model.machineState.a}
      ]
@@ -94,7 +97,8 @@ memoryViewRow state memAddr memValue =
     td [] (memMarkingA(memAddr, state)),
     td [] (memMarkingIP(memAddr, state)),
     td [style [("text-align","right")] ] [text ((toString memAddr)++":")],
-    td [] (memoryValueEditCell memAddr memValue state)
+    td [] (memoryValueEditCell memAddr memValue state),
+    td [] [text (disassembleNumber memValue)]
   ]
 
 memMarkingIP : (Int, ExtraMemoryViewState) -> List (Html Msg)
@@ -130,6 +134,13 @@ memoryValueEditCell memAddr memValue state =
         onBlur (MemoryEvent(UpdateMem memAddr curValue))
       ] []
      ]
+
+disassembleNumber : Int -> String
+disassembleNumber nr =
+  let (lit,src,dest) = Model.decodeIns nr
+      srcStr = if src==0 then (toString lit) else Model.srcRegisterName src
+      destStr = Model.destRegisterName dest
+  in srcStr++">"++destStr
 
 main : Program Never
 main =

@@ -183,7 +183,7 @@
 </g>
 
 <!-- Z reg -->
-<g transform="translate(390 180)">
+<g transform="translate(400 180)">
   <use xlink:href="#reg" transform="translate(0 0)"/>
   <use xlink:href="#arrow-down" transform="translate(0 20)"/>
   <use xlink:href="#arrow-up" transform="translate(0 50)"/>
@@ -202,7 +202,7 @@
 </g>
 
 <!-- W reg -->
-<g transform="translate(510 180)">
+<g transform="translate(520 180)">
   <use xlink:href="#reg" transform="translate(0 0)"/>
   <use xlink:href="#arrow-down" transform="translate(0 20)"/>
   <use xlink:href="#arrow-up" transform="translate(0 50)"/>

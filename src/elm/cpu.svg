@@ -20,6 +20,9 @@
   <g id="arrow-right">
     <path stroke="black" d="M0 0 l30 0 l-10 7.5 l0 -15 l10 7.5"/>
   </g>
+  <g id="arrow-head-right">
+    <path stroke="black" d="M0 0 l-10 7.5 l0 -15 l10 7.5"/>
+  </g>
   <g id="arrow-left">
     <path stroke="black" d="M0 0 l-30 0 l10 7.5 l0 -15 l-10 7.5"/>
   </g>
@@ -214,11 +217,13 @@
 
 <!-- IP reg -->
 <g transform="translate(390 340)">
-  <use xlink:href="#reg" transform="translate(0 0)"/>
+  <use xlink:href="#reg" transform="translate(20 70)"/>
+  <path stroke="black" fill="black" d="M0 -50 L0 50"/>
   <use xlink:href="#arrow-up" transform="translate(0 -20)"/>
-  <use xlink:href="#arrow-down" transform="translate(0 -50)"/>
+  <use xlink:href="#arrow-down" transform="translate(0 20)"/>
+  <!-- <use xlink:href="#arrow-head-right" transform="translate(20 70)"/> -->
 
-  <text x="-42" y="0"
+  <text x="-22" y="70"
         text-anchor="end" dominant-baseline="middle"
         fill="#555" stroke="none"
         font-size="25px" font-family="Bitstream Vera Sans"
@@ -244,11 +249,10 @@
  -->
 
 <!-- L reg -->
-<g transform="translate(390 410)">
+<g transform="translate(460 340)">
   <use xlink:href="#reg" transform="translate(0 0)"/>
-  <use xlink:href="#arrow-down" transform="translate(0 -50)"/>
-  <use xlink:href="#arrow-up" transform="translate(110 -90)"/>
-  <path stroke="black" fill="none" d="M40 0 l60 0 l10 -10 l0 -110"/>
+  <use xlink:href="#arrow-up" transform="translate(30 -20)"/>
+  <use xlink:href="#arrow-up" transform="translate(-20 50)"/>
 
   <text x="-42" y="0"
         text-anchor="end" dominant-baseline="middle"
@@ -256,25 +260,24 @@
         font-size="25px" font-family="Bitstream Vera Sans"
         >L</text>
 
-  <text x="90" y="-120"
+  <text x="50" y="-50"
         text-anchor="middle" dominant-baseline="text-after-edge"
         fill="#0aa"
         font-size="20px" font-family="Bitstream Vera Sans"
         >9</text>
 </g>
 
-
 <!-- J path -->
-<g transform="translate(470 290)">
-  <path stroke="black" fill="none" d="M0 0 l0 40 l-10 10 l-30 0"/>
-  <use xlink:href="#arrow-left" transform="translate(-10 50)"/>
+<g transform="translate(520 290)">
+  <path stroke="black" fill="none" d="M0 0 l0 110 l-10 10 l-60 0"/>
+  <use xlink:href="#arrow-left" transform="translate(-40 120)"/>
 
-  <path stroke="black" fill="none" d="M-200 -270 l300 0 l10 10 l0 280 l-10 10 l-100 0"/>
-  <path stroke="black" fill="black" d="M0 30 l5 5 l0 -10 l-5 5 z"/>
+  <path stroke="black" fill="none" d="M-240 -270 l290 0 l10 10 l0 330 l-10 10 l-50 0"/>
+  <path stroke="black" fill="black" d="M0 80 l5 5 l0 -10 l-5 5 z"/>
   <use xlink:href="#arrow-right" transform="translate(-50 -270)"/>
 
-  <text x="-2" y="20"
-        text-anchor="end" dominant-baseline="middle"
+  <text x="4" y="50"
+        text-anchor="start" dominant-baseline="middle"
         fill="#555" stroke="none"
         font-size="25px" font-family="Bitstream Vera Sans"
         >J</text>

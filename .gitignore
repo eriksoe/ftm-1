@@ -4,3 +4,8 @@
 
 *.o
 a.out
+
+# LaTeX outputs:
+*.pdf
+*.log
+*.aux

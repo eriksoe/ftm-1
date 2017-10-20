@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="600"
+   height="500"
+   version="1.1">
+<defs>
+  <g id="dummy"></g>
+
+  <g id="reg">
+    <path fill="white" stroke="black" d="M-40 -20 l80 0 l0 40 l-80 0 z"/>
+  </g>
+  <g id="arrow-up">
+    <path stroke="black" d="M0 0 l0 -30 l7.5 10 l-15 0 l7.5 -10"/>
+  </g>
+  <g id="arrow-head-up">
+    <path stroke="black" d="M0 0 l7.5 10 l-15 0 l7.5 -10"/>
+  </g>
+  <g id="arrow-down">
+    <path stroke="black" d="M0 0 l0 30 l7.5 -10 l-15 0 l7.5 10"/>
+  </g>
+  <g id="arrow-right">
+    <path stroke="black" d="M0 0 l30 0 l-10 7.5 l0 -15 l10 7.5"/>
+  </g>
+  <g id="arrow-left">
+    <path stroke="black" d="M0 0 l-30 0 l10 7.5 l0 -15 l-10 7.5"/>
+  </g>
+  <g id="arrow-head-left">
+    <path stroke="black" d="M0 0 l10 7.5 l0 -15 l-10 7.5"/>
+  </g>
+  <g id="arrow-right-small">
+    <path stroke="black" d="M0 0 l20 0 l-5 5 l0 -10 l5 5"/>
+  </g>
+
+
+  <!-- ==================== Placed and drawn parts: ==================== -->
+  <!-- Background -->
+  <g id="background">
+    <path fill="#999" d="M0 0 L600 0 L600 500 L0 500 z"/>
+  </g>
+
+  <!-- Data path -->
+  <g id="data-path">
+    <path fill="#eee" stroke="black" d="M30 230 l540 0 l0 60 l-540 0 z"/>
+  </g>
+
+  <!-- K input -->
+  <g id="reg-K" transform="translate(80 340)">
+    <use xlink:href="#reg" transform="translate(0 0)"/>
+    <use xlink:href="#arrow-up" transform="translate(0 -20)"/>
+
+    <path stroke="black" fill="none" stroke-dasharray="3 3" d="M0 20 l0 70"/>
+    <use xlink:href="#arrow-head-up" transform="translate(0 20)"/>
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >K</text>
+
+    <text x="0" y="-50"
+          text-anchor="middle" dominant-baseline="text-after-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >0</text>
+  </g>
+
+  <!-- X reg -->
+  <g id="reg-X" transform="translate(80 180)">
+    <use xlink:href="#reg" transform="translate(0 0)"/>
+    <use xlink:href="#arrow-down" transform="translate(0 20)"/>
+    <use xlink:href="#arrow-up" transform="translate(0 50)"/>
+    <!-- <use xlink:href="#arrow-up" transform="translate(0 -20)"/> -->
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >X</text>
+
+    <text x="0" y="50"
+          text-anchor="middle" dominant-baseline="text-before-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >1</text>
+  </g>
+
+  <!-- Y reg -->
+  <g id="reg-Y" transform="translate(200 180)">
+    <use xlink:href="#reg" transform="translate(0 0)"/>
+    <use xlink:href="#arrow-down" transform="translate(0 20)"/>
+    <use xlink:href="#arrow-up" transform="translate(0 50)"/>
+    <!-- <use xlink:href="#arrow-up" transform="translate(0 -20)"/> -->
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >Y</text>
+
+    <text x="0" y="50"
+          text-anchor="middle" dominant-baseline="text-before-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >2</text>
+  </g>
+
+  <!-- Z reg -->
+  <g id="reg-Z" transform="translate(400 180)">
+    <use xlink:href="#reg" tranWsform="translate(0 0)"/>
+    <use xlink:href="#arrow-down" transform="translate(0 20)"/>
+    <use xlink:href="#arrow-up" transform="translate(0 50)"/>
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >Z</text>
+
+    <text x="0" y="50"
+          text-anchor="middle" dominant-baseline="text-before-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >4</text>
+  </g>
+
+  <!-- W reg -->
+  <g id="reg-W" transform="translate(520 180)">
+    <use xlink:href="#reg" transform="translate(0 0)"/>
+    <use xlink:href="#arrow-down" transform="translate(0 20)"/>
+    <use xlink:href="#arrow-up" transform="translate(0 50)"/>
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >W</text>
+
+    <text x="0" y="50"
+          text-anchor="middle" dominant-baseline="text-before-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >5</text>
+  </g>
+
+  <g id="ALU">
+    <!-- ALU -->
+    <path fill="#eee" stroke="black" d="M50 130 l60 -80 l60 0 l60 80 l-66 0 l-24 -32 l-24 32 z"/>
+    <ellipse fill="white" stroke="black" cx="140" cy="75" rx="15" ry="15"/>
+
+    <!-- Inputs: -->
+    <use xlink:href="#arrow-up" transform="translate(80 160)"/>
+    <use xlink:href="#arrow-up" transform="translate(200 160)"/>
+  </g>
+
+  <!-- R path -->
+  <g id="path-R" transform="translate(300,230)">
+    <path stroke="black" fill="none" d="M-160 -180 l0 -20 l10 -10 l140 0 l10 10 l0 170"/>
+    <use xlink:href="#arrow-down" x="0" y="-30"/>
+
+    <text x="2" y="-50"
+          text-anchor="start" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >R</text>
+
+    <text x="-10" y="0"
+          text-anchor="middle" dominant-baseline="text-before-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >3</text>
+  </g>
+
+  <!-- C path -->
+  <g id="path-C" transform="translate(280,230)">
+    <use xlink:href="#arrow-up" x="0" y="0"/>
+    <path stroke="black" fill="none" d="M0 0 l0 -145 l-10 -10 l-115 0"/>
+    <path stroke="black" fill="black" d="M-125 -155 l5 5 l0 -10 l-5 5"/>
+    <text x="-2" y="-50"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >C</text>
+  </g>
+
+  <!-- A reg -->
+  <g id="reg-A" transform="translate(200 340)">
+    <use xlink:href="#reg" transform="translate(0 0)"/>
+    <use xlink:href="#arrow-up" transform="translate(0 -20)"/>
+    <use xlink:href="#arrow-down" transform="translate(0 -50)"/>
+    <use xlink:href="#arrow-right-small" transform="translate(40 0)"/>
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >A</text>
+
+    <text x="0" y="-50"
+          text-anchor="middle" dominant-baseline="text-after-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >6</text>
+  </g>
+
+  <!-- M reg -->
+  <g id="reg-M" transform="translate(270 340)">
+    <use xlink:href="#reg" transform="translate(0 70)"/>
+
+    <!--
+        <path stroke="black" fill="#eee" d="M0 -50 l20 20 l-10 0 l0 90 l10 0 l-20 20
+        l-20 -20 l10 0 l0 -90 l-10 0 z"/>
+    -->
+
+    <path stroke="black" fill="#eee" d="M0 -50 l15 15 l-7.5 0 l0 70 l7.5 0 l-15 15
+                                        l-15 -15 l7.5 0 l0 -70 l-7.5 0 z"/>
+
+    <text x="-42" y="70"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >M</text>
+
+    <text x="0" y="-50"
+          text-anchor="middle" dominant-baseline="text-after-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >7</text>
+  </g>
+
+
+  <!-- IP reg -->
+  <g id="reg-IP" transform="translate(490 340)">
+    <use xlink:href="#reg" transform="translate(0 0)"/>
+    <use xlink:href="#arrow-up" transform="translate(0 -20)"/>
+    <use xlink:href="#arrow-down" transform="translate(0 -50)"/>
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >IP</text>
+
+    <text x="0" y="-50"
+          text-anchor="middle" dominant-baseline="text-after-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >8</text>
+  </g>
+
+  <!-- L reg -->
+  <g id="reg-L" transform="translate(370 340)">
+    <use xlink:href="#reg" transform="translate(0 0)"/>
+
+    <use xlink:href="#arrow-up" transform="translate(0 -20)"/>
+
+    <path stroke="black" fill="none" d="M110 20 l0 20 l-10 10 l-90 0 l-10 -10 l0 -20"/>
+    <use xlink:href="#arrow-head-up" transform="translate(0 20)"/>
+
+    <text x="-42" y="0"
+          text-anchor="end" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >L</text>
+
+    <text x="0" y="-50"
+          text-anchor="middle" dominant-baseline="text-after-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >9'</text>
+  </g>
+
+
+  <!-- J path -->
+  <g id="path-J" transform="translate(550 290)">
+    <path stroke="black" fill="none" d="M0 0 l0 90 l-10 10 l-30 0 l-10 -10 l0 -20"/>
+    <use xlink:href="#arrow-head-up" transform="translate(-50 70)"/>
+    <!-- <use xlink:href="#arrow-left" transform="translate(-10 50)"/> -->
+
+    <path stroke="black" fill="none" d="M-260 -270 l285 0 l10 10 l0 330 l-10 10 l-17 0"/>
+    <!-- <path stroke="black" fill="black" d="M0 80 l5 5 l0 -10 l-5 5 z"/> -->
+    <path stroke="black" fill="black" d="M5 80 l5 5 l0 -10 l-5 5 z"/>
+    <!-- <ellipse stroke="black" fill="none" cx="0" cy="80" rx="8" ry="4"/> -->
+    <ellipse stroke="black" fill="#eee" cx="0" cy="80" rx="5" ry="5"/>
+    <use xlink:href="#arrow-right" transform="translate(-50 -270)"/>
+
+    <text x="4" y="50"
+          text-anchor="start" dominant-baseline="middle"
+          fill="#555" stroke="none"
+          font-size="25px" font-family="Bitstream Vera Sans"
+          >J</text>
+
+    <text x="0" y="0"
+          text-anchor="middle" dominant-baseline="text-after-edge"
+          fill="#0aa"
+          font-size="20px" font-family="Bitstream Vera Sans"
+          >9"</text>
+  </g>
+</defs>
+
+</svg>

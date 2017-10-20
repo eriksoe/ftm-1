@@ -1,5 +1,5 @@
 import Model
---import CPUView
+import CPUView
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -71,6 +71,9 @@ view : State -> Html Msg
 view model = body [
        style [ ("backgroundColor", "#333") ]
      ] [
+     div [style []] [
+       CPUView.cpuView model.machineState
+     ],
      div [style [ ("color", "white") ]] [
        button [onClick (SelectSpeed Reset)] [text "Reset"],
        button [onClick (SelectSpeed Step)] [text "Step"],
@@ -82,7 +85,7 @@ memoryView mem state =
   div [] [
     table [] [
       thead [] [text "Memory"],
-       tbody [] (memoryViewRows mem state)]
+      tbody [] (memoryViewRows mem state)]
   ]
 
 memoryViewRows mem state =
@@ -127,6 +130,7 @@ memoryValueEditCell memAddr memValue state =
   in [
       Html.input [
         style [("text-align", "right"), ("backgroundColor", bgcolor)],
+        size 10,
         value curValue,
         onFocus (MemoryEvent(UpdateMemEdit memAddr (toString memValue))),
         onClick (MemoryEvent(UpdateMemEdit memAddr (toString memValue))),

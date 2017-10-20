@@ -1,7 +1,8 @@
 module Model exposing (
   MachineState,
   init, step, resetIP,
-  decodeIns, srcRegisterName, destRegisterName
+  decodeIns, srcRegisterName, destRegisterName,
+  fetchOpt
   )
 
 import Array exposing (Array)
@@ -69,7 +70,7 @@ decodeAluOp v =
 init : () -> MachineState
 init() = {
   error = Nothing,
-  memory = Array.set 3 42 (Array.repeat kMEM_SIZE 0),
+  memory = Array.repeat kMEM_SIZE 0,
   ip = 0,
   x = 0, y = 0, z = 0, w = 0,
   op = AluX, a = 0, lastIP = 0}
@@ -169,6 +170,9 @@ i2b2(x,y) = (i2b x, i2b y)
 
 fetch(state, addr) =
   Maybe.withDefault 0 (Array.get addr state.memory)
+
+fetchOpt(state, addr) =
+  Array.get addr state.memory
 
 store(state, addr, value) =
   {state | memory=Array.set addr value state.memory}

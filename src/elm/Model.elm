@@ -31,16 +31,6 @@ type ALUOperation =
   | Lt | Gt | Lte | Gte | Eq | Neq
   | And | Or | Xor | NotX
 
---========== I/O Devices ====================--
-type alias IODevice = {
-  name : String,
-  baseAddress : Address,
-  ioSpaceSize : Int,
-  input : Address -> Datum,
-  output : (Address,Datum) -> ()
-  --render : () -> Html
-}
-
 
 --==================== Encoding ==============================--
 

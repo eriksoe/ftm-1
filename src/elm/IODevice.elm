@@ -1,7 +1,13 @@
-module IODevice exposing (State, Metadata, IODevice, IOCmd, create)
+module IODevice exposing (
+  State, Metadata, IODevice, IOCmd, Address, Datum,
+  IODeviceCmd(..), IOCmd(..),
+  create, render
+  )
+
 import Random
 import Array exposing (Array)
 import Html exposing (Html)
+import Html.App
 
 --========== I/O Devices ====================--
 type alias Datum = Int
@@ -24,10 +30,10 @@ type alias Metadata = {
   ioSpaceSize : Int,
 
   -- Methods:
-  reset : State -> (State, Cmd IOCmd),
+  reset : State -> (State, Cmd IODeviceCmd),
   input : (State, Address) -> Datum,
-  output : (State, Address, Datum) -> (),
-  render : (State) -> Html IOCmd
+  output : (State, Address, Datum) -> State,
+  render : (State) -> Html IODeviceCmd
 }
 
 type alias IODevice = {metadata: Metadata, state: State}
@@ -44,4 +50,14 @@ create : Metadata -> (IODevice, Cmd IOCmd)
 create md =
   let blankState = initialState()
       (state,cmd) = md.reset blankState
-  in ({metadata=md, state=state}, cmd)
+  in ({metadata=md, state=state},
+      Cmd.map (wrapEvent md) cmd)
+
+render : IODevice -> Html IOCmd
+render dev =
+  let html = dev.metadata.render dev.state
+  in Html.App.map (wrapEvent dev.metadata) html
+
+wrapEvent : Metadata -> IODeviceCmd -> IOCmd
+wrapEvent metadata event =
+  IOInputCmd {baseAddress=metadata.baseAddress, event=event}

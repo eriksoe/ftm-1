@@ -1,12 +1,18 @@
 module IODeviceList exposing (deviceSpecList, createDeviceList)
 
-import IODevice exposing (IODevice, IOCmd)
-import Random exposing (Generator)
+import IODevice exposing (IODevice, IOCmd, IODeviceCmd)
+
+-- Concrete devices:
+import RNGDevice
+
+--import Random exposing (Generator)
 import Html exposing (Html)
 import Html.App
 
 deviceSpecList : List IODevice.Metadata
-deviceSpecList = []
+deviceSpecList = [
+  RNGDevice.metadata
+  ]
 
 createDeviceList : () -> (List IODevice, Cmd IOCmd)
 createDeviceList() =
@@ -26,7 +32,7 @@ devView : IODevice -> Html IOCmd
 devView dev =
   Html.div [] [
     Html.div [] [Html.text ("Device "++toString dev.metadata.name)],
-    Html.div [] [dev.metadata.render dev.state]
+    Html.div [] [IODevice.render dev]
   ]
 
 subscriptions model =

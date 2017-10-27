@@ -23,7 +23,17 @@ init =
   createDeviceList()
 
 update cmd model =
-  (model, Cmd.none)
+  (applyInputToDevices(model,cmd),
+   Cmd.none)
+
+applyInputToDevices : (List IODevice, IOCmd) -> List IODevice
+applyInputToDevices (devs, cmd) =
+  case (devs, cmd) of
+    ([], _) -> Debug.log ("Uncaught input command: "++(toString cmd)) []
+    (dev::rest, IODevice.IOInputCmd inputCmd) ->
+      if dev.metadata.baseAddress == inputCmd.baseAddress
+      then IODevice.applyCommand(dev,inputCmd.event)::rest
+      else dev::applyInputToDevices(devs,cmd)
 
 view model =
   Html.div [] (List.map devView model)

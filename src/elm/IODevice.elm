@@ -1,7 +1,7 @@
 module IODevice exposing (
   State, Metadata, IODevice, IOCmd, Address, Datum,
   IODeviceCmd(..), IOCmd(..),
-  create, render
+  create, render, applyCommand
   )
 
 import Random
@@ -61,3 +61,9 @@ render dev =
 wrapEvent : Metadata -> IODeviceCmd -> IOCmd
 wrapEvent metadata event =
   IOInputCmd {baseAddress=metadata.baseAddress, event=event}
+
+applyCommand : (IODevice, IODeviceCmd) -> IODevice
+applyCommand (device, cmd) =
+  case cmd of
+    IODeviceInput transformer ->
+      {device | state = (transformer device.state)}

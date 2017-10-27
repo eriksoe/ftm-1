@@ -27,15 +27,13 @@ metadata = {
 
 reset : State -> (State, Cmd IODeviceCmd)
 reset state =
-   ({state | control=Array.repeat 2 0}, Cmd.none)
-
-reset2 : State -> (State, Cmd IODeviceCmd)
-reset2 state =
    let toCmd = \rnd -> IODeviceInput (setSeed rnd)
-   in (state, Random.generate toCmd (Random.int Random.minInt Random.maxInt))
+   in ({state | control=Array.repeat 2 0},
+       Random.generate toCmd (Random.int Random.minInt Random.maxInt))
 
 setSeed : Int -> State -> State
-setSeed rnd model = model
+setSeed rnd model =
+  {model | seed=Just(Random.initialSeed rnd)}
 
 input : (State, Address) -> Datum
 input (model,addr) =
@@ -50,7 +48,8 @@ render model =
   Html.div [] [
   Html.text "<RNG device>",
   Html.br [] [], Html.text "Min: ", Html.text (toString (minValue model)),
-  Html.br [] [], Html.text "Max: ", Html.text (toString (maxValue model))
+  Html.br [] [], Html.text "Max: ", Html.text (toString (maxValue model)),
+  Html.br [] [], Html.text "Seed: ", Html.text (toString model.seed)
   ]
 
 minValue model =

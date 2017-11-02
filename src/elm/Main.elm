@@ -80,18 +80,25 @@ type alias ExtraMemoryViewState = {editingState: Maybe MemoryEditState, ip: Int,
 
 view : State -> Html Msg
 view model = body [
-       style [ ("backgroundColor", "#333") ]
+       style []
      ] [
-     div [style []] [
-       CPUView.cpuView model.machineState
+     div [style [("overflow","auto"), ("backgroundColor", "#333")]] [
+     div [style [("float","left")]] [
+       div [style [("padding", "0px"), ("margin", "5px"), ("border-color","#999"), ("border-style","outset"), ("background-color", "#999"), ("color", "black") ]] [
+         fieldset [style [("margin","5px"),("border", "groove"),("border-color","#999")]] [
+           legend [style [("color", "#ddd")]] [text "Control"],
+           button [onClick (SelectSpeed Reset)] [text "Reset"],
+           button [onClick (SelectSpeed Step)] [text "Step"]
+         ],
+         CPUView.cpuView model.machineState
+       ],
+       div [style [("padding", "0px"), ("margin", "5px"), ("border-color","#999"), ("border-style","outset"), ("background-color", "#999"), ("color", "black") ]] [
+         memoryView model.machineState.memory {editingState=model.editingMemory, ip=model.machineState.ip, a=model.machineState.a}
+       ]
      ],
-     div [style []] [
+     div [style [("float","left"),("width","60%")]] [ -- [("margin-left", "15px")]] [
        Html.App.map wrapIOEvent (IODeviceList.view model.machineState.devices)
-     ],
-     div [style [ ("color", "white") ]] [
-       button [onClick (SelectSpeed Reset)] [text "Reset"],
-       button [onClick (SelectSpeed Step)] [text "Step"],
-     memoryView model.machineState.memory {editingState=model.editingMemory, ip=model.machineState.ip, a=model.machineState.a}
+     ]
      ]
      ]
 

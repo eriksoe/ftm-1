@@ -65,9 +65,9 @@ generateRandom' state =
 render : (State) -> Html IODeviceCmd
 render model =
   Html.div [] [
-    Html.br [] [], Html.text "Min: ", Html.text (toString (minValue model))
-  , Html.br [] [], Html.text "Max: ", Html.text (toString (maxValue model))
-  --Html.br [] [], Html.text "Seed: ", Html.text (toString model.seed)
+    Html.text "Min: ", Html.text (toString (minValue model))
+  , Html.br [] []
+  , Html.text "Max: ", Html.text (toString (maxValue model))
   ]
 
 minValue model =

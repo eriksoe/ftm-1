@@ -86,7 +86,7 @@ view model = body [
      div [style [("float","left")]] [
        div [style [("padding", "0px"), ("margin", "5px"), ("border-color","#999"), ("border-style","outset"), ("background-color", "#999"), ("color", "black") ]] [
          fieldset [style [("margin","5px"),("border", "groove"),("border-color","#999")]] [
-           legend [style [("color", "#ddd")]] [text "Control"],
+           legend [style [("color", "#444")]] [text "Control"],
            button [onClick (SelectSpeed Reset)] [text "Reset"],
            button [onClick (SelectSpeed Step)] [text "Step"]
          ],

@@ -88,9 +88,11 @@ view model =
 
 devView : IODevice -> Html IOCmd
 devView dev =
-  Html.div [style [("padding", "0px"), ("margin", "5px"), ("border-color","#999"), ("border-style","outset"), ("background", "#999"), ("color", "white") ]] [
+  Html.div [style [("padding", "0px"), ("margin", "5px"), ("border-color","#999"), ("border-style","outset"), ("background", "#999"), ("color", "black") ]] [
     Html.fieldset [style [("border", "groove"),("border-color","#999"), ("margin", "10px 5px")]] [
-      Html.legend [style [("color", "#ddd")]] [Html.text dev.metadata.name],
+      Html.legend [style [("color", "#444")], Html.Attributes.title ("Base address: "++toString dev.metadata.baseAddress)] [
+        Html.text dev.metadata.name
+      ],
       Html.div [] [IODevice.render dev]
     ]
   ]

@@ -31,7 +31,7 @@ type alias Metadata = {
 
   -- Methods:
   reset : State -> (State, Cmd IODeviceCmd),
-  input : (State, Address) -> (State,Datum),
+  input : (State, Address) -> (State, Datum),
   output : (State, Address, Datum) -> State,
   render : (State) -> Html IODeviceCmd
 }

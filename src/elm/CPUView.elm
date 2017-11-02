@@ -24,7 +24,7 @@ cpuView state =
 
       use [xlinkHref "cpu-parts.svg#reg-A"] [], regContents(200,340, state.a),
       use [xlinkHref "cpu-parts.svg#reg-M"] [], regContentsStr(270,410,
-           Model.fetchOpt(state, state.a) |> Maybe.map toString |> Maybe.withDefault "??"),
+           Model.memPeek(state, state.a) |> Maybe.map toString |> Maybe.withDefault "??"),
 
       use [xlinkHref "cpu-parts.svg#reg-IP"] [], regContents(490,340, state.ip),
       use [xlinkHref "cpu-parts.svg#path-J"] [],

@@ -1,4 +1,6 @@
-import Model
+import Model exposing (MachineState)
+import IODevice
+import IODeviceList
 import CPUView
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -20,19 +22,20 @@ type alias State = {
 
 type SpeedCmd = Reset | Pause | Step | RunSlow | RunFast
 type MemInputCmd = SelectMem Int | UpdateMemEdit Int String | UpdateMem Int String
-type Msg = SelectSpeed SpeedCmd | MemoryEvent MemInputCmd
+type Msg = SelectSpeed SpeedCmd | MemoryEvent MemInputCmd | IOEvent IODevice.IOCmd
 
 ---------- Main: ----------------------------------------
 
 init : (State, Cmd Msg)
 init =
   let
+    (devices, devCmds) = IODeviceList.createDeviceList()
     model = {
-      machineState = Model.init(),
+      machineState = Model.init(devices),
       speed = Paused,
       editingMemory = Nothing
       }
-    cmd = Cmd.none
+    cmd = Cmd.map (IOEvent) devCmds
   in (model,cmd)
 
 update : Msg -> State -> (State, Cmd Msg)
@@ -53,8 +56,16 @@ update msg model =
       {model | machineState=Model.step(model.machineState)}
     SelectSpeed Reset ->
       {model | machineState=Model.resetIP(model.machineState)}
+    IOEvent evt -> handleIOEvent(model,evt)
     other -> model
    , Cmd.none)
+
+handleIOEvent : (State,IODevice.IOCmd) -> State
+handleIOEvent (state,evt) =
+  let devices' = IODeviceList.handleEvent evt state.machineState.devices
+      machineState0 = state.machineState
+      machineState' = {machineState0 | devices=devices'}
+  in {state | machineState=machineState'}
 
 validateDatum : String -> Maybe Int
 validateDatum s =
@@ -74,12 +85,18 @@ view model = body [
      div [style []] [
        CPUView.cpuView model.machineState
      ],
+     div [style []] [
+       Html.App.map wrapIOEvent (IODeviceList.view model.machineState.devices)
+     ],
      div [style [ ("color", "white") ]] [
        button [onClick (SelectSpeed Reset)] [text "Reset"],
        button [onClick (SelectSpeed Step)] [text "Step"],
      memoryView model.machineState.memory {editingState=model.editingMemory, ip=model.machineState.ip, a=model.machineState.a}
      ]
      ]
+
+wrapIOEvent cmd =
+ IOEvent cmd
 
 memoryView mem state =
   div [] [

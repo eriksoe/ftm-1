@@ -2,15 +2,18 @@ module Model exposing (
   MachineState,
   init, step, resetIP,
   decodeIns, srcRegisterName, destRegisterName,
-  fetchOpt
+  memPeek
   )
 
 import Array exposing (Array)
+import IODevice
+import IODeviceList
 
 --==================== Data types ==============================--
 --========== Machine model ====================--
 
 kMEM_SIZE = 25 -- 10000
+kIO_BASE = 1000000
 
 type alias Datum = Int
 type alias Address = Int
@@ -22,7 +25,9 @@ type alias MachineState = {
   ip: Int,
   x:Datum, y:Datum, z:Datum, w:Datum,
   op:ALUOperation,
-  a:Datum, lastIP:Datum
+  a:Datum, lastIP:Datum,
+
+  devices : List IODevice.IODevice
 }
 
 type ALUOperation =
@@ -57,17 +62,18 @@ decodeAluOp v =
 
 --==================== Execution ==============================--
 
-init : () -> MachineState
-init() = {
+init : (List IODevice.IODevice) -> MachineState
+init(devices) = {
   error = Nothing,
   memory = Array.repeat kMEM_SIZE 0,
   ip = 0,
   x = 0, y = 0, z = 0, w = 0,
-  op = AluX, a = 0, lastIP = 0}
+  op = AluX, a = 0, lastIP = 0,
+  devices = devices}
 
 -- Reset IP and clear error flag.
 resetIP state =
-  {state | ip=0, error=Nothing}
+  {state | ip=0, error=Nothing} -- TODO: Clear IO devices?
 
 step : MachineState -> MachineState
 step state =
@@ -78,15 +84,16 @@ step state =
 doStep state =
      let (ins,state2) = fetchIns state
          (lit,src,dest) = decodeIns ins
-         d = fetchPhase (state2,src,lit)
-         state3 = storePhase (state2,dest,d)
-     in state3
+         (d,devices') = fetchPhase (state2,src,lit)
+         state3 = {state2 | devices=devices'}
+         state4 = storePhase (state3,dest,d)
+     in state4
 
 fetchIns state =
    let ip = state.ip
-       ins = fetch(state, state.ip)
+       (ins,devices') = fetch(state, state.ip)
        newIP = ip+1
-   in (ins, {state| ip=newIP})
+   in (ins, {state| ip=newIP, devices=devices'})
 
 decodeIns ins =
   let lit = ins // 100
@@ -97,17 +104,17 @@ decodeIns ins =
 
 fetchPhase(state, src, lit) =
  case src of
-   0 -> lit
-   1 -> state.x
-   2 -> state.y
-   3 -> aluResult(state)
-   4 -> state.z
-   5 -> state.w
-   6 -> state.a
+   0 -> (lit,     state.devices)
+   1 -> (state.x, state.devices)
+   2 -> (state.y, state.devices)
+   3 -> (aluResult(state), state.devices)
+   4 -> (state.z, state.devices)
+   5 -> (state.w, state.devices)
+   6 -> (state.a, state.devices)
    7 -> fetch(state, state.a)
-   8 -> state.ip
-   9 -> state.lastIP
-   _ -> 0 -- TODO: Internal error.
+   8 -> (state.ip, state.devices)
+   9 -> (state.lastIP, state.devices)
+   _ -> (0, state.devices) -- TODO: Internal error.
 
 storePhase(state, dest, d) =
   case dest of
@@ -159,13 +166,20 @@ i2b2(x,y) = (i2b x, i2b y)
 --========== Memory access ====================--
 
 fetch(state, addr) =
-  Maybe.withDefault 0 (Array.get addr state.memory)
+  if addr < kIO_BASE
+  then (Array.get addr state.memory |> Maybe.withDefault 0, state.devices)
+  else let (devices', value) = IODeviceList.input(state.devices, addr)
+       in (value |> Maybe.withDefault 0, devices')
 
-fetchOpt(state, addr) =
-  Array.get addr state.memory
+memPeek(state, addr) =
+  if addr < kIO_BASE
+  then Array.get addr state.memory
+  else Nothing
 
 store(state, addr, value) =
-  {state | memory=Array.set addr value state.memory}
+  if addr < kIO_BASE
+  then {state | memory=Array.set addr value state.memory}
+  else {state | devices=IODeviceList.output(state.devices, addr, value)}
 
 --========== Utilities for external use ====================--
 srcRegisterName : Int -> String

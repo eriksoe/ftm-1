@@ -28,15 +28,26 @@ metadata = {
 reset : State -> (State, Cmd IODeviceCmd)
 reset state =
    let toCmd = \rnd -> IODeviceInput (setSeed rnd)
-   in ({state | control=Array.repeat 2 0},
+   in ({state | control=Array.repeat 2 0, data=Array.repeat 0 0},
        Random.generate toCmd (Random.int Random.minInt Random.maxInt))
 
 setSeed : Int -> State -> State
 setSeed rnd model =
   {model | seed=Just(Random.initialSeed rnd)}
 
-input : (State, Address) -> (State,Datum)
+input : (State, Address) -> (State, Datum)
 input (state,addr) =
+  generateRandom' state
+
+
+output : (State, Address, Datum) -> State
+output (state, addr, value) =
+  if addr>=1 && addr<=2
+  then {state | control = Array.set (addr-1) value state.control}
+  else state
+
+generateRandom' : State -> (State, Int)
+generateRandom' state =
   let min = minValue(state)
       max = maxValue(state)
   in case state.seed of
@@ -51,18 +62,12 @@ input (state,addr) =
        else
          (state, min)
 
-output : (State, Address, Datum) -> State
-output (state, addr, value) =
-  if addr>=1 && addr<=2
-  then {state | control = Array.set (addr-1) value state.control}
-  else state
-
 render : (State) -> Html IODeviceCmd
 render model =
   Html.div [] [
-  Html.br [] [], Html.text "Min: ", Html.text (toString (minValue model)),
-  Html.br [] [], Html.text "Max: ", Html.text (toString (maxValue model)),
-  Html.br [] [], Html.text "Seed: ", Html.text (toString model.seed)
+    Html.br [] [], Html.text "Min: ", Html.text (toString (minValue model))
+  , Html.br [] [], Html.text "Max: ", Html.text (toString (maxValue model))
+  --Html.br [] [], Html.text "Seed: ", Html.text (toString model.seed)
   ]
 
 minValue model =

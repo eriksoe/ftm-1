@@ -1,6 +1,8 @@
-module IODeviceList exposing (deviceSpecList, createDeviceList)
+module IODeviceList exposing (deviceSpecList, createDeviceList,
+  input, output,
+  view, handleEvent)
 
-import IODevice exposing (IODevice, IOCmd, IODeviceCmd)
+import IODevice exposing (IODevice, IOCmd, IODeviceCmd, Address, Datum)
 
 -- Concrete devices:
 import RNGDevice
@@ -22,6 +24,10 @@ createDeviceList() =
 init =
   createDeviceList()
 
+handleEvent cmd model =
+  applyInputToDevices(model,cmd)
+
+--==================================================--
 update cmd model =
   (applyInputToDevices(model,cmd),
    Cmd.none)
@@ -34,6 +40,47 @@ applyInputToDevices (devs, cmd) =
       if dev.metadata.baseAddress == inputCmd.baseAddress
       then IODevice.applyCommand(dev,inputCmd.event)::rest
       else dev::applyInputToDevices(devs,cmd)
+
+input : (List IODevice, Address) -> (List IODevice, Maybe Datum)
+input (devs, addr) =
+  applyAtAddress inputFromDevice (devs, addr)
+
+inputFromDevice : (IODevice,Address) -> (IODevice.State,Datum)
+inputFromDevice(dev, relativeAddr) =
+  dev.metadata.input(dev.state, relativeAddr)
+
+output : (List IODevice, Address, Datum) -> List IODevice
+output (devs,addr,value) =
+  let (devs', _) = applyAtAddress (outputToDevice value) (devs, addr)
+  in devs'
+
+outputToDevice : Datum -> (IODevice,Address) -> (IODevice.State,())
+outputToDevice value (dev, relativeAddr) =
+  (dev.metadata.output(dev.state, relativeAddr, value), ())
+
+applyAtAddress : ((IODevice, Address) -> (IODevice.State, a)) -> (List IODevice,Address) -> (List IODevice, Maybe a)
+applyAtAddress func (devs,addr) =
+  case devs of
+    [] -> ([], Nothing)
+    dev::rest ->
+      case deviceRelativeAddress(dev, addr) of
+        Just relAddr ->
+          let (devState', value) = func(dev, relAddr)
+              dev' = {dev | state=devState'}
+          in (dev'::rest, Just value)
+        Nothing ->
+          let (rest', valueOpt) = applyAtAddress func (rest, addr)
+          in  (dev::rest', valueOpt)
+
+deviceRelativeAddress (dev,addr) =
+      if addr >= dev.metadata.baseAddress
+      then let relAddr = addr - dev.metadata.baseAddress
+           in  if relAddr < dev.metadata.ioSpaceSize
+               then Just relAddr
+               else Nothing
+      else Nothing
+
+--======================================================--
 
 view model =
   Html.div [] (List.map devView model)
